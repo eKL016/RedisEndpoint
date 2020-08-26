@@ -11,7 +11,7 @@ namespace Example
     class Program
     {
         const string URL = "localhost";
-        const ushort PORT = 6379;
+        const ushort PORT = 6380;
         private static Subscriber mySubscriber = new Subscriber(URL, PORT);
 
         static int Main()
@@ -27,8 +27,3 @@ namespace Example
     }
 }
 ```
-### Implemented Event Detectors
-1. HIT ( BF1, HLA(WIP) )
-2. FIRE (BF1, HLA(WIP) )
-3. ACCELX (PC2)
-4. ACCELY (PC2)

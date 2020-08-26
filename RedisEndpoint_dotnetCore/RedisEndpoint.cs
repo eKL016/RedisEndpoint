@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using StackExchange.Redis;
 
-namespace RedisEndpoint 
-{ 
+namespace RedisEndpoint
+{
 
     public class RedisEndpoint
     {
-        
+
         protected static ConfigurationOptions redisConfiguration = new ConfigurationOptions
         {
             AbortOnConnectFail = false,
@@ -23,7 +23,14 @@ namespace RedisEndpoint
         {
             if (multiplexer == null)
             {
-                redisConfiguration.EndPoints.Add(url, port);
+                try
+                {
+                    redisConfiguration.EndPoints.Add(url, port);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
                 multiplexer = ConnectionMultiplexer.Connect(redisConfiguration);
             }
         }
@@ -36,7 +43,8 @@ namespace RedisEndpoint
 
     public class Publisher : RedisEndpoint
     {
-        public Publisher(string url, ushort port) : base(url, port) {
+        public Publisher(string url, ushort port) : base(url, port)
+        {
             connection = multiplexer.GetSubscriber();
         }
         public void Publish(string channelName, string msg)
@@ -48,7 +56,8 @@ namespace RedisEndpoint
     public class Subscriber : RedisEndpoint
     {
         public ChannelMessageQueue msgQueue;
-        public Subscriber(string url, ushort port) : base(url, port) {
+        public Subscriber(string url, ushort port) : base(url, port)
+        {
             connection = multiplexer.GetSubscriber();
         }
         public void SubscribeTo(string channelName)
@@ -57,5 +66,5 @@ namespace RedisEndpoint
         }
     }
 
-   
+
 }
